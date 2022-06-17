@@ -1,9 +1,54 @@
 import React from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import { Provider } from 'react-redux';
-import { store } from './redux/store';
-import { Message } from './redux/Message';
-import {Header} from 'react-native/Libraries/NewAppScreen';
+import {Platform, StyleSheet, Text, View, Button} from 'react-native';
+import {Provider} from 'react-redux';
+import {store} from './redux/store';
+import {Message} from './redux/Message';
+
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+
+const HomeScreen = ({navigation}) => {
+  return (
+    <Provider store={store}>
+      <View style={styles.container}>
+        <Text style={styles.welcome}>Created with Drew Template!</Text>
+        <Text style={styles.instructions}>To get started, edit App.js</Text>
+        <Text style={styles.instructions}>{instructions}</Text>
+        <Message navigation={navigation} />
+      </View>
+    </Provider>
+  );
+};
+
+const LoginScreen = ({navigation}) => {
+  return (
+    <View style={styles.container}>
+      <Text style={{fontSize: 40}}>Login For More 🔥</Text>
+      <Button title="Log In" onPress={() => navigation.navigate('Home')} />
+    </View>
+  );
+};
+
+const Stack = createStackNavigator();
+
+const MyStack = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{title: 'Login Screen', headerLeft: null}}
+        />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{title: 'Welcome Back!', headerLeft: null}}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Press Cmd+D or shake for dev menu\n',
@@ -12,20 +57,8 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu\n',
 });
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
-         <View style={styles.container}>
-           <Header />
-           <Text style={styles.welcome}>Created with Drew Template!</Text>
-           <Text style={styles.instructions}>To get started, edit App.js</Text>
-           <Text style={styles.instructions}>{instructions}</Text>
-           <Message />
-         </View>
-      </Provider>
-    );
-  }
+export default function App() {
+  return <MyStack />;
 }
 
 const styles = StyleSheet.create({
@@ -38,11 +71,11 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 25,
     textAlign: 'center',
-    marginTop: 200,
+    marginTop: 100,
   },
   instructions: {
     textAlign: 'center',
     color: '#333333',
-    marginBottom: 30,
+    margin: 15,
   },
 });
