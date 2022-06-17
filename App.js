@@ -9,6 +9,13 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import {LoginScreen} from './screens/LoginScreen';
 
+const instructions = Platform.select({
+  ios: 'Press Cmd+R to reload,\n' + 'Press Cmd+D or shake for dev menu\n',
+  android:
+    'Double tap R on your keyboard to reload,\n' +
+    'Shake or press menu button for dev menu\n',
+});
+
 const HomeScreen = ({navigation}) => {
   console.log('at home');
   return (
@@ -24,14 +31,6 @@ const HomeScreen = ({navigation}) => {
 };
 
 const Stack = createStackNavigator();
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Press Cmd+D or shake for dev menu\n',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu\n',
-});
-
 export default function App() {
   return (
     <NavigationContainer>
@@ -39,7 +38,7 @@ export default function App() {
         <Stack.Screen
           name="Login"
           component={LoginScreen}
-          options={{title: 'Login Screen', headerLeft: null}}
+          options={{title: 'Login Screen', headerShown: false}}
         />
         <Stack.Screen
           name="Home"
