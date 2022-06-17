@@ -7,6 +7,8 @@ import {Message} from './redux/Message';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
+import {LoginScreen} from './screens/LoginScreen';
+
 const HomeScreen = ({navigation}) => {
   console.log('at home');
   return (
@@ -18,16 +20,6 @@ const HomeScreen = ({navigation}) => {
         <Message navigation={navigation} />
       </View>
     </Provider>
-  );
-};
-
-const LoginScreen = ({navigation}) => {
-  console.log('at login');
-  return (
-    <View style={styles.container}>
-      <Text style={{fontSize: 40}}>Login For More 🔥</Text>
-      <Button title="Log In" onPress={() => navigation.navigate('Home')} />
-    </View>
   );
 };
 
