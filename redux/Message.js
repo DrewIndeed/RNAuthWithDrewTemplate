@@ -22,7 +22,12 @@ export const Message = ({navigation}) => {
       </Text>
       <Button title={'Set Message'} onPress={handlePress1} />
       <Button title={'Reset Message'} onPress={handlePress2} />
-      <Button title="Log Out" onPress={() => navigation.navigate('Login')} />
+      <Button
+        title="Log Out"
+        onPress={() => {
+          navigation.reset({routes: [{name: 'Login'}]});
+        }}
+      />
     </View>
   );
 };

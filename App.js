@@ -8,6 +8,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 const HomeScreen = ({navigation}) => {
+  console.log('at home');
   return (
     <Provider store={store}>
       <View style={styles.container}>
@@ -21,6 +22,7 @@ const HomeScreen = ({navigation}) => {
 };
 
 const LoginScreen = ({navigation}) => {
+  console.log('at login');
   return (
     <View style={styles.container}>
       <Text style={{fontSize: 40}}>Login For More 🔥</Text>
@@ -31,7 +33,14 @@ const LoginScreen = ({navigation}) => {
 
 const Stack = createStackNavigator();
 
-const MyStack = () => {
+const instructions = Platform.select({
+  ios: 'Press Cmd+R to reload,\n' + 'Press Cmd+D or shake for dev menu\n',
+  android:
+    'Double tap R on your keyboard to reload,\n' +
+    'Shake or press menu button for dev menu\n',
+});
+
+export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -48,17 +57,6 @@ const MyStack = () => {
       </Stack.Navigator>
     </NavigationContainer>
   );
-};
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Press Cmd+D or shake for dev menu\n',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu\n',
-});
-
-export default function App() {
-  return <MyStack />;
 }
 
 const styles = StyleSheet.create({
