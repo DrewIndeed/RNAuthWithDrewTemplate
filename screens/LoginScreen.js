@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, TextInput, Button, StyleSheet} from 'react-native';
+import {Text, View, TextInput, Button, StyleSheet, Alert} from 'react-native';
 import {useForm, useController} from 'react-hook-form';
 
 // resuable input field
@@ -25,9 +25,15 @@ export const LoginScreen = ({navigation}) => {
     if (data.email.length === 0) alert('Email is required');
     else if (data.password.length === 0) alert('Password is required');
     else {
-      alert('Successfully logged in!');
-      navigation.navigate('Home');
-      reset();
+      Alert.alert('Login Status', 'Logged in successfully!', [
+        {
+          text: "Let's Go",
+          onPress: () => {
+            navigation.navigate('Home');
+            reset();
+          },
+        },
+      ]);
     }
   };
 
