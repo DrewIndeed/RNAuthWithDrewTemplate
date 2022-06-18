@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, Button} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {setMessage, resetMessage} from './messageSlice';
+import {setMessage, resetMessage} from '../redux/messageSlice';
 
 export const Message = ({navigation}) => {
   const dispatch = useDispatch();
