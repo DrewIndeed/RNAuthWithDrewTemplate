@@ -22,10 +22,20 @@ export const LoginScreen = ({navigation}) => {
 
   // handle submit
   const onSubmit = data => {
-    if (data.email.length === 0) alert('Email is required');
-    else if (data.password.length === 0) alert('Password is required');
-    else {
-      Alert.alert('Login Status', 'Logged in successfully!', [
+    if (data.email.length === 0) {
+      Alert.alert('Status', 'Email is required!', [
+        {
+          text: 'OK',
+        },
+      ]);
+    } else if (data.password.length === 0) {
+      Alert.alert('Status', 'Password is required!', [
+        {
+          text: 'OK',
+        },
+      ]);
+    } else {
+      Alert.alert('Status', 'Logged in successfully!', [
         {
           text: "Let's Go",
           onPress: () => {
