@@ -9,7 +9,11 @@ export default function logCurrentStorage(screenName) {
         myStorage[keyVal[0]] = keyVal[1];
       }
 
-      console.log(`CURRENT STORAGE (print at ${screenName}): ${myStorage}`);
+      console.log(
+        `CURRENT STORAGE (print at ${screenName}): ${JSON.stringify(
+          myStorage,
+        )}`,
+      );
     });
   });
 }

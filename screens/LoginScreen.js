@@ -2,11 +2,13 @@ import React, {useEffect} from 'react';
 import {Text, View, TextInput, Button, StyleSheet, Alert} from 'react-native';
 import {useForm, useController} from 'react-hook-form';
 
+// to use Redux actions and action payload
 import {useDispatch} from 'react-redux';
 import {login} from '../redux/userSlice';
 
+// methods to handle data
 import logCurrentStorage from '../utils/logCurrentStorage';
-import {saveData, getData, readData} from '../utils/processData';
+import {saveData, getData} from '../utils/processData';
 
 // resuable input field
 const Input = ({name, control}) => {
@@ -31,36 +33,40 @@ export const LoginScreen = ({navigation}) => {
 
   // medthod to check login status (when App first loads)
   const checkLogin = async () => {
-    // get and parse data strong from Async Storages
-    const rawInfoData = await getData('userInfo');
-    const userInfo = JSON.parse(rawInfoData);
+    try {
+      // get and parse data strong from Async Storages
+      const rawInfoData = await getData('userInfo');
+      const userInfo = JSON.parse(rawInfoData);
 
-    // console.log(`userInfo in checkLogin(): ${userInfo}`);
-    // console.log(`userEmail in checkLogin() ${userInfo.userEmail}`);
+      // console.log(`userInfo in checkLogin(): ${userInfo}`);
+      // console.log(`userEmail in checkLogin() ${userInfo.userEmail}`);
 
-    if (userInfo.userEmail) {
-      // notify that user has already logged in
-      Alert.alert('Status', `Welcome back, ${userInfo.userEmail}`, [
-        {
-          text: "Let's Go",
-          onPress: () => {
-            navigation.navigate('Home');
-            reset();
+      if (userInfo) {
+        // notify that user has already logged in
+        Alert.alert('Status', `Welcome back, ${userInfo.userEmail}`, [
+          {
+            text: "Let's Go",
+            onPress: () => {
+              navigation.navigate('Home');
+              reset();
+            },
           },
-        },
-      ]);
+        ]);
 
-      // update App's Redux state
-      dispatch(
-        login({
-          isAuthenticated: true,
-          userEmail: userInfo.userEmail,
-          userPwd: userInfo.userPwd,
-        }),
-      );
+        // update App's Redux state
+        dispatch(
+          login({
+            isAuthenticated: true,
+            userEmail: userInfo.userEmail,
+            userPwd: userInfo.userPwd,
+          }),
+        );
 
-      // print current Async Storage
-      logCurrentStorage('LoginScreen');
+        // print current Async Storage
+        logCurrentStorage('LoginScreen');
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 

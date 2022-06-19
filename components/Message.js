@@ -1,11 +1,16 @@
 import React from 'react';
-import {View, Text, Button} from 'react-native';
+import {View, Text, Button, Alert} from 'react-native';
 
 // to use Redux actions and action payload
 import {useDispatch, useSelector} from 'react-redux';
+import {logout} from '../redux/userSlice';
 
 // redux actions from (message) reducer
 import {setMessage, resetMessage} from '../redux/messageSlice';
+
+// methods to handle data
+import logCurrentStorage from '../utils/logCurrentStorage';
+import {removeData} from '../utils/processData';
 
 export const Message = ({navigation}) => {
   // init dispatch function
@@ -34,7 +39,24 @@ export const Message = ({navigation}) => {
       <Button
         title="Log Out"
         onPress={() => {
-          navigation.reset({routes: [{name: 'Login'}]});
+          // remove user data from Async Storage
+          removeData('userInfo');
+
+          // update App's Redux state
+          dispatch(logout());
+
+          // print current Async Storage
+          logCurrentStorage('Message Component');
+
+          // notify that user has already logged in
+          Alert.alert('Status', `Logged out successfully!`, [
+            {
+              text: 'OK',
+              onPress: () => {
+                navigation.reset({routes: [{name: 'Login'}]});
+              },
+            },
+          ]);
         }}
       />
     </View>
