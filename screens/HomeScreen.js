@@ -1,7 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 
 import {Message} from '../components/Message';
+
+import logCurrentStorage from '../utils/logCurrentStorage';
+import {readData} from '../utils/processData';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Press Cmd+D or shake for dev menu\n',
@@ -11,7 +14,12 @@ const instructions = Platform.select({
 });
 
 export const HomeScreen = ({navigation}) => {
-  console.log('at home');
+  useEffect(() => {
+    console.log('at home');
+    logCurrentStorage();
+    readData('userInfo');
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}>Created with Drew Template!</Text>

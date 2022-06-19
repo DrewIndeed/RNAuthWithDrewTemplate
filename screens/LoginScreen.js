@@ -1,6 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text, View, TextInput, Button, StyleSheet, Alert} from 'react-native';
 import {useForm, useController} from 'react-hook-form';
+
+import {useDispatch} from 'react-redux';
+import {login} from '../redux/userSlice';
+
+import logCurrentStorage from '../utils/logCurrentStorage';
+import {saveData, getData, readData} from '../utils/processData';
 
 // resuable input field
 const Input = ({name, control}) => {
@@ -20,6 +26,44 @@ export const LoginScreen = ({navigation}) => {
   // react hook form init
   const {control, handleSubmit, reset} = useForm();
 
+  // redux usage
+  const dispatch = useDispatch();
+
+  // medthod to check login status
+  const checkLogin = async () => {
+    const rawInfoData = await getData('userInfo');
+    const userInfo = JSON.parse(rawInfoData);
+    console.log(`userInfo in checkLogin: ${userInfo}`);
+    console.log(`userEmail in checkLogin: ${userInfo}`);
+
+    if (userInfo.userEmail) {
+      Alert.alert('Status', `Welcome back, ${userInfo.userEmail}`, [
+        {
+          text: "Let's Go",
+          onPress: () => {
+            navigation.navigate('Home');
+            reset();
+          },
+        },
+      ]);
+
+      dispatch(
+        login({
+          isAuthenticated: true,
+          userEmail: userInfo.userEmail,
+          userPwd: userInfo.userPwd,
+        }),
+      );
+
+      logCurrentStorage();
+    }
+  };
+
+  // read data from storageg to check
+  useEffect(() => {
+    checkLogin();
+  }, []);
+
   // handle submit
   const onSubmit = data => {
     if (data.email.length === 0) {
@@ -35,7 +79,7 @@ export const LoginScreen = ({navigation}) => {
         },
       ]);
     } else {
-      Alert.alert('Status', 'Logged in successfully!', [
+      Alert.alert('Status', `Welcome back, ${data.email}`, [
         {
           text: "Let's Go",
           onPress: () => {
@@ -44,6 +88,25 @@ export const LoginScreen = ({navigation}) => {
           },
         },
       ]);
+
+      dispatch(
+        login({
+          isAuthenticated: true,
+          userEmail: data.email,
+          userPwd: data.password,
+        }),
+      );
+
+      logCurrentStorage();
+      
+      saveData(
+        'userInfo',
+        JSON.stringify({
+          isAuthenticated: true,
+          userEmail: data.email,
+          userPwd: data.password,
+        }),
+      );
     }
   };
 

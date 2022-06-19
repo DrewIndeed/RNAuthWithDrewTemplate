@@ -9,20 +9,18 @@ const userInitialState = {
 
 const userSlice = createSlice({
   name: 'user',
-  initialState: userInitialState,
+  initialState: {
+    userStatus: userInitialState,
+  },
   reducers: {
     login(state, action) {
-      state.isAuthenticated = action.payload.isAuthenticated;
-      state.userEmail = action.payload.userEmail;
-      state.userPwd = action.payload.userPwd;
+      state.userStatus = action.payload;
     },
     logout(state) {
-      state.isAuthenticated = false;
-      state.userEmail = '';
-      state.userPwd = '';
+      state.userStatus = userInitialState;
     },
   },
 });
 
-export const {login, logout} = messageSlice.actions;
+export const {login, logout} = userSlice.actions;
 export default userSlice.reducer;

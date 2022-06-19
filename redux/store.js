@@ -1,8 +1,8 @@
 // REDUX-PERSIST
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {applyMiddleware, combineReducers} from 'redux';
+import {applyMiddleware, combineReducers, createStore} from 'redux';
 import {createLogger} from 'redux-logger';
-import {persistReducer} from 'redux-persist';
+import {persistReducer, persistStore} from 'redux-persist';
 
 import messageReducer from './messageSlice';
 import userReducer from './userSlice';
@@ -16,6 +16,7 @@ const rootReducer = combineReducers({
 // blacklist a store attribute using it's reducer name.
 const persistConfig = {
   key: 'root',
+  version: 1,
   storage: AsyncStorage,
   // Whitelist (Save Specific Reducers)
   whitelist: ['userReducer'],
