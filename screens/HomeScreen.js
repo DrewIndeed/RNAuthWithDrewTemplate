@@ -3,6 +3,7 @@ import {Platform, StyleSheet, Text, View} from 'react-native';
 
 import {Message} from '../components/Message';
 
+// methods to handle data storage
 import logCurrentStorage from '../utils/logCurrentStorage';
 import {readData} from '../utils/processData';
 
@@ -16,7 +17,11 @@ const instructions = Platform.select({
 export const HomeScreen = ({navigation}) => {
   useEffect(() => {
     console.log('at home');
-    logCurrentStorage();
+
+    // print current Async Storage
+    logCurrentStorage('HomeScreen');
+
+    // read Usser Info from Async Storage
     readData('userInfo');
   }, []);
 

@@ -29,14 +29,17 @@ export const LoginScreen = ({navigation}) => {
   // redux usage
   const dispatch = useDispatch();
 
-  // medthod to check login status
+  // medthod to check login status (when App first loads)
   const checkLogin = async () => {
+    // get and parse data strong from Async Storages
     const rawInfoData = await getData('userInfo');
     const userInfo = JSON.parse(rawInfoData);
-    console.log(`userInfo in checkLogin: ${userInfo}`);
-    console.log(`userEmail in checkLogin: ${userInfo}`);
+
+    // console.log(`userInfo in checkLogin(): ${userInfo}`);
+    // console.log(`userEmail in checkLogin() ${userInfo.userEmail}`);
 
     if (userInfo.userEmail) {
+      // notify that user has already logged in
       Alert.alert('Status', `Welcome back, ${userInfo.userEmail}`, [
         {
           text: "Let's Go",
@@ -47,6 +50,7 @@ export const LoginScreen = ({navigation}) => {
         },
       ]);
 
+      // update App's Redux state
       dispatch(
         login({
           isAuthenticated: true,
@@ -55,7 +59,8 @@ export const LoginScreen = ({navigation}) => {
         }),
       );
 
-      logCurrentStorage();
+      // print current Async Storage
+      logCurrentStorage('LoginScreen');
     }
   };
 
@@ -67,18 +72,23 @@ export const LoginScreen = ({navigation}) => {
   // handle submit
   const onSubmit = data => {
     if (data.email.length === 0) {
+      // if email is blank
       Alert.alert('Status', 'Email is required!', [
         {
           text: 'OK',
         },
       ]);
     } else if (data.password.length === 0) {
+      // if passowrd is blank
       Alert.alert('Status', 'Password is required!', [
         {
           text: 'OK',
         },
       ]);
     } else {
+      // otherwise, login and proceed to Home Screen
+
+      // notify that user has already logged in
       Alert.alert('Status', `Welcome back, ${data.email}`, [
         {
           text: "Let's Go",
@@ -89,6 +99,7 @@ export const LoginScreen = ({navigation}) => {
         },
       ]);
 
+      // update App's Redux state
       dispatch(
         login({
           isAuthenticated: true,
@@ -97,8 +108,7 @@ export const LoginScreen = ({navigation}) => {
         }),
       );
 
-      logCurrentStorage();
-      
+      // save user info in Async Storage
       saveData(
         'userInfo',
         JSON.stringify({
@@ -107,6 +117,9 @@ export const LoginScreen = ({navigation}) => {
           userPwd: data.password,
         }),
       );
+
+      // print current Async Storage
+      logCurrentStorage('LoginScreen');
     }
   };
 

@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 
-//user slice definition
+// user slice definition
 const userInitialState = {
   isAuthenticated: false,
   userEmail: '',

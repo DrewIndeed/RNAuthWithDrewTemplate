@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function logCurrentStorage() {
+export default function logCurrentStorage(screenName) {
   AsyncStorage.getAllKeys().then(keyArray => {
     AsyncStorage.multiGet(keyArray).then(keyValArray => {
       let myStorage = {};
@@ -9,7 +9,7 @@ export default function logCurrentStorage() {
         myStorage[keyVal[0]] = keyVal[1];
       }
 
-      console.log('CURRENT STORAGE: ', myStorage);
+      console.log(`CURRENT STORAGE (print at ${screenName}): ${myStorage}`);
     });
   });
 }
