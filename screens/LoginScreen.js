@@ -2,10 +2,12 @@ import React, {useEffect} from 'react';
 import {useController, useForm} from 'react-hook-form';
 import {Alert, Button, StyleSheet, Text, TextInput, View} from 'react-native';
 
-import {useDispatch} from 'react-redux';
+// redux
+import {useDispatch, useSelector} from 'react-redux';
+import {mainSelector} from '../redux/selectors';
 import {login} from '../slices/authSlice';
 
-import logCurrentStorage from '../utils/logCurrentStorage';
+// import logCurrentStorage from '../utils/logCurrentStorage';
 
 // resuable input field
 const Input = ({name, control}) => {
@@ -22,13 +24,26 @@ const Input = ({name, control}) => {
 };
 
 export const LoginScreen = ({navigation}) => {
-  // print current storage
-  useEffect(() => {
-    // logCurrentStorage('LOGIN SCREEN');
-  }, []);
-
   // redux
   const dispatch = useDispatch();
+  const grabber = useSelector(mainSelector);
+
+  // print current storage
+  useEffect(() => {
+    console.log('at home');
+
+    // logCurrentStorage('LOGIN SCREEN');
+
+    // if user logged in before, go to Home
+    if (grabber.auth.isAuthenticated) {
+      Alert.alert('Status', `Welcome back, ${grabber.auth.info.email}`, [
+        {
+          text: "Let's Go",
+          onPress: () => navigation.navigate('Home'),
+        },
+      ]);
+    }
+  }, []);
 
   // react hook form init
   const {control, handleSubmit, reset} = useForm();
@@ -59,11 +74,19 @@ export const LoginScreen = ({navigation}) => {
           }),
         );
 
-        // reset form values
-        reset();
+        // notify
+        Alert.alert('Status', `Welcome back, ${data.email}`, [
+          {
+            text: "Let's Go",
+            onPress: () => {
+              // reset form values
+              reset();
 
-        // go to Home
-        navigation.navigate('Home');
+              // go to Home
+              navigation.navigate('Home');
+            },
+          },
+        ]);
       } catch (error) {
         console.log(error);
       }
