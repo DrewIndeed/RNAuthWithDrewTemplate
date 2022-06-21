@@ -2,6 +2,9 @@ import React from 'react';
 import {useController, useForm} from 'react-hook-form';
 import {Alert, Button, StyleSheet, Text, TextInput, View} from 'react-native';
 
+import {useDispatch} from 'react-redux';
+import {login} from '../slices/authSlice';
+
 // resuable input field
 const Input = ({name, control}) => {
   const {field} = useController({control, defaultValue: '', name});
@@ -17,6 +20,9 @@ const Input = ({name, control}) => {
 };
 
 export const LoginScreen = ({navigation}) => {
+  // redux
+  const dispatch = useDispatch();
+
   // react hook form init
   const {control, handleSubmit, reset} = useForm();
 
@@ -37,7 +43,19 @@ export const LoginScreen = ({navigation}) => {
         },
       ]);
     } else {
-      navigation.navigate('Home');
+      try {
+        dispatch(
+          login({
+            email: data.email,
+            pwd: data.password,
+          }),
+        );
+
+        navigation.navigate('Home');
+        reset();
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
