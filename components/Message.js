@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, Text, View} from 'react-native';
 
+// redux
 import {useDispatch, useSelector} from 'react-redux';
 import {logout} from '../slices/authSlice';
 import {show, hide} from '../slices/messageSlice';
@@ -25,7 +26,10 @@ export const Message = ({navigation}) => {
       <Button
         title="Log Out"
         onPress={() => {
+          // redux logout
           dispatch(logout());
+
+          // go back to Login
           navigation.reset({
             index: 0,
             routes: [{name: 'Login'}],

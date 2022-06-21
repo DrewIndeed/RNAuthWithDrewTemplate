@@ -44,6 +44,7 @@ export const LoginScreen = ({navigation}) => {
       ]);
     } else {
       try {
+        // redux login
         dispatch(
           login({
             email: data.email,
@@ -51,8 +52,11 @@ export const LoginScreen = ({navigation}) => {
           }),
         );
 
-        navigation.navigate('Home');
+        // reset form values
         reset();
+
+        // go to Home
+        navigation.navigate('Home');
       } catch (error) {
         console.log(error);
       }
