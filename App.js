@@ -1,10 +1,5 @@
 import React from 'react';
 import {ActivityIndicator, View} from 'react-native';
-import {Provider} from 'react-redux';
-import {store, persistor} from './redux/store';
-
-// REDUX-PERSIST
-import {PersistGate} from 'redux-persist/integration/react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -25,23 +20,19 @@ const LoadingMarkup = () => (
 const Stack = createStackNavigator();
 export default function App() {
   return (
-    <Provider store={store}>
-      <PersistGate loading={<LoadingMarkup />} persistor={persistor}>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Login"
-              component={LoginScreen}
-              options={{title: 'Login Screen', headerShown: false}}
-            />
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{title: 'Home Screen', headerLeft: null}}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PersistGate>
-    </Provider>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{title: 'Login Screen', headerShown: false}}
+        />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{title: 'Home Screen', headerLeft: null}}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }

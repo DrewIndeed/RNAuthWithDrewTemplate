@@ -1,11 +1,6 @@
 import React, {useEffect} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
-
 import {Message} from '../components/Message';
-
-// methods to handle data storage
-import logCurrentStorage from '../utils/logCurrentStorage';
-import {readData} from '../utils/processData';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Press Cmd+D or shake for dev menu\n',
@@ -17,12 +12,6 @@ const instructions = Platform.select({
 export const HomeScreen = ({navigation}) => {
   useEffect(() => {
     console.log('at home');
-
-    // print current Async Storage
-    logCurrentStorage('HomeScreen');
-
-    // read Usser Info from Async Storage
-    readData('userInfo');
   }, []);
 
   return (
