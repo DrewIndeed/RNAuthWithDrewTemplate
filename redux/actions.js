@@ -22,3 +22,19 @@ export const userLogout = () => dispatch => {
     },
   });
 };
+
+export const showMsg =
+  (msg = 'Hello from powerful Redux ⚡️') =>
+  dispatch => {
+    dispatch({
+      type: SHOW_MSG,
+      payload: msg,
+    });
+  };
+
+export const resetMsg = () => dispatch => {
+  dispatch({
+    type: RESET_MSG,
+    payload: 'Tap "Show Message" for a secret!',
+  });
+};

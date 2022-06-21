@@ -1,4 +1,4 @@
-import {USER_LOGIN, USER_LOGOUT} from './actions';
+import {USER_LOGIN, USER_LOGOUT, SHOW_MSG, RESET_MSG} from './actions';
 
 const initialState = {
   userInfo: {
@@ -6,7 +6,7 @@ const initialState = {
     userEmail: '',
     userPwd: '',
   },
-  userMsg: '',
+  userMsg: 'Tap "Show Message" for a secret!',
 };
 
 function drewAuthReducer(state = initialState, action) {
@@ -21,6 +21,17 @@ function drewAuthReducer(state = initialState, action) {
           userEmail: '',
           userPwd: '',
         },
+      };
+    case SHOW_MSG:
+      return {
+        ...state,
+        userMsg: action.payload,
+      };
+
+    case RESET_MSG:
+      return {
+        ...state,
+        userMsg: 'Tap "Show Message" for a secret!',
       };
     default:
       return state;
