@@ -1,6 +1,11 @@
 import React, {useEffect} from 'react';
 import {Text, View, TextInput, Button, StyleSheet, Alert} from 'react-native';
 import {useForm, useController} from 'react-hook-form';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// REDUX
+import {useDispatch} from 'react-redux';
+import {userLogin} from '../redux/actions';
 
 // to use Redux actions and action payload
 import {useDispatch} from 'react-redux';
@@ -25,55 +30,59 @@ const Input = ({name, control}) => {
 };
 
 export const LoginScreen = ({navigation}) => {
-  // react hook form init
-  const {control, handleSubmit, reset} = useForm();
+  useEffect(() => {
+    // handle case: when user already logged in
+    AsyncStorage.getItem('persist:root')
+      .then(dt => {
+        const {userInfo} = JSON.parse(dt);
+        const {isAuthenticated, userEmail} = JSON.parse(userInfo);
 
-  // redux usage
+        if (isAuthenticated) {
+          Alert.alert('Status', `Welcome back, ${userEmail}`, [
+            {
+              text: "Let's Go",
+              onPress: () => {
+                navigation.navigate('Home');
+                reset();
+              },
+            },
+          ]);
+        }
+      })
+      .catch(error => console.log(error));
+  }, []);
+
+  // dispatch to use Redux action
   const dispatch = useDispatch();
 
-  // medthod to check login status (when App first loads)
-  const checkLogin = async () => {
+  // react hook form init
+  const {control, handleSubmit, reset} = useForm();
+  
+  // handle login action
+  const loginHandler = data => {
     try {
-      // get and parse data strong from Async Storages
-      const rawInfoData = await getData('userInfo');
-      const userInfo = JSON.parse(rawInfoData);
+      dispatch(
+        userLogin({
+          isAuthenticated: true,
+          userEmail: data.email,
+          userPwd: data.password,
+        }),
+      );
 
-      // console.log(`userInfo in checkLogin(): ${userInfo}`);
-      // console.log(`userEmail in checkLogin() ${userInfo.userEmail}`);
-
-      if (userInfo) {
-        // notify that user has already logged in
-        Alert.alert('Status', `Welcome back, ${userInfo.userEmail}`, [
-          {
-            text: "Let's Go",
-            onPress: () => {
-              navigation.navigate('Home');
-              reset();
-            },
+      // notify and direct to Home if success
+      Alert.alert('Status', `Welcome back, ${data.email}`, [
+        {
+          text: "Let's Go",
+          onPress: () => {
+            navigation.navigate('Home');
+            reset();
           },
-        ]);
-
-        // update App's Redux state
-        dispatch(
-          login({
-            isAuthenticated: true,
-            userEmail: userInfo.userEmail,
-            userPwd: userInfo.userPwd,
-          }),
-        );
-
-        // print current Async Storage
-        logCurrentStorage('LoginScreen');
-      }
+        },
+      ]);
     } catch (error) {
       console.log(error);
     }
   };
-
-  // read data from storageg to check
-  useEffect(() => {
-    checkLogin();
-  }, []);
 
   // handle submit
   const onSubmit = data => {
@@ -92,40 +101,7 @@ export const LoginScreen = ({navigation}) => {
         },
       ]);
     } else {
-      // otherwise, login and proceed to Home Screen
-
-      // notify that user has already logged in
-      Alert.alert('Status', `Welcome back, ${data.email}`, [
-        {
-          text: "Let's Go",
-          onPress: () => {
-            navigation.navigate('Home');
-            reset();
-          },
-        },
-      ]);
-
-      // update App's Redux state
-      dispatch(
-        login({
-          isAuthenticated: true,
-          userEmail: data.email,
-          userPwd: data.password,
-        }),
-      );
-
-      // save user info in Async Storage
-      saveData(
-        'userInfo',
-        JSON.stringify({
-          isAuthenticated: true,
-          userEmail: data.email,
-          userPwd: data.password,
-        }),
-      );
-
-      // print current Async Storage
-      logCurrentStorage('LoginScreen');
+      loginHandler(data);
     }
   };
 

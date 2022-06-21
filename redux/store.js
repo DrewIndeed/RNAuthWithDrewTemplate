@@ -1,42 +1,23 @@
-// async storage
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {persistStore, persistReducer} from 'redux-persist';
 
-// handle Redux reducers and store
-import {applyMiddleware, combineReducers, createStore} from 'redux';
-
-// logger inside middleware
+import drewAuthReducer from './reducers';
 import {createLogger} from 'redux-logger';
 
-// transform palin Redux to persisted Redux
-import {persistReducer, persistStore} from 'redux-persist';
-
-// individual reducers
-import messageReducer from './messageSlice';
-import userReducer from './userSlice';
-
-// combine indi reducer
-const rootReducer = combineReducers({
-  user: userReducer,
-  message: messageReducer,
-});
-
-// persist config obj
 const persistConfig = {
-  key: 'root', // also the same key storred in Async Storage
-  version: 1,
+  key: 'root',
   storage: AsyncStorage,
-  // these will be persisted
-  whitelist: ['userReducer'],
-  // these will NOT be persisted
-  blacklist: ['messageReducer'],
+  whitelist: ['userInfo'], // the state in REDUCER, oh goshhh
 };
 
-// persist reducer
-const persistedReducer = persistReducer(persistConfig, rootReducer);
+const rootReducer = combineReducers({
+  drewAuthReducer: persistReducer(persistConfig, drewAuthReducer),
+});
 
-// persist store
-const store = createStore(persistedReducer, applyMiddleware(createLogger()));
-const persistor = persistStore(store);
-
-// exports
-export {store, persistor};
+export const store = createStore(
+  rootReducer,
+  applyMiddleware(thunk, createLogger()),
+);
+export const persistor = persistStore(store);
