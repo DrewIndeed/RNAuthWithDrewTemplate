@@ -2,6 +2,9 @@ import React from 'react';
 import {Text, View, TextInput, Button, StyleSheet, Alert} from 'react-native';
 import {useForm, useController} from 'react-hook-form';
 
+import {useDispatch} from 'react-redux';
+import {userLogin} from '../redux/actions';
+
 // resuable input field
 const Input = ({name, control}) => {
   const {field} = useController({control, defaultValue: '', name});
@@ -17,8 +20,34 @@ const Input = ({name, control}) => {
 };
 
 export const LoginScreen = ({navigation}) => {
+  const dispatch = useDispatch();
+
   // react hook form init
   const {control, handleSubmit, reset} = useForm();
+
+  const loginHandler = data => {
+    try {
+      dispatch(
+        userLogin({
+          isAuthenticated: true,
+          userEmail: data.email,
+          userPwd: data.password,
+        }),
+      );
+
+      Alert.alert('Status', `Welcome back, ${data.email}`, [
+        {
+          text: "Let's Go",
+          onPress: () => {
+            navigation.navigate('Home');
+            reset();
+          },
+        },
+      ]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // handle submit
   const onSubmit = data => {
@@ -35,15 +64,7 @@ export const LoginScreen = ({navigation}) => {
         },
       ]);
     } else {
-      Alert.alert('Status', 'Logged in successfully!', [
-        {
-          text: "Let's Go",
-          onPress: () => {
-            navigation.navigate('Home');
-            reset();
-          },
-        },
-      ]);
+      loginHandler(data);
     }
   };
 

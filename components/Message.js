@@ -1,33 +1,38 @@
 import React from 'react';
-import {View, Text, Button} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {setMessage, resetMessage} from '../redux/messageSlice';
+import {Button, Text, View, Alert} from 'react-native';
+
+import {useSelector, useDispatch} from 'react-redux';
+import {userLogout} from '../redux/actions';
 
 export const Message = ({navigation}) => {
+  const {userInfo} = useSelector(state => state.drewAuthReducer);
   const dispatch = useDispatch();
-  const {message} = useSelector(state => state.message);
 
-  const handlePress1 = () => {
-    dispatch(setMessage('Redux Ready to Serve ⚡️'));
-  };
+  const logoutHandler = () => {
+    try {
+      dispatch(userLogout());
 
-  const handlePress2 = () => {
-    dispatch(resetMessage());
+      Alert.alert('Status', `See you later, ${userInfo.userEmail}`, [
+        {
+          text: 'OK',
+          onPress: () => {
+            navigation.reset({routes: [{name: 'Login'}]});
+          },
+        },
+      ]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <View style={{flex: 1}}>
       <Text style={{fontWeight: 'bold', fontSize: 18, marginBottom: 10}}>
-        {message}
+        {'lol'}
       </Text>
-      <Button title={'Set Message'} onPress={handlePress1} />
-      <Button title={'Reset Message'} onPress={handlePress2} />
-      <Button
-        title="Log Out"
-        onPress={() => {
-          navigation.reset({routes: [{name: 'Login'}]});
-        }}
-      />
+      <Button title={'Set Message'} onPress={() => {}} />
+      <Button title={'Reset Message'} onPress={() => {}} />
+      <Button title="Log Out" onPress={logoutHandler} />
     </View>
   );
 };
