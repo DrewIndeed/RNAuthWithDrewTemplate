@@ -1,6 +1,7 @@
 import React from 'react';
 import {Button, Text, View, Alert} from 'react-native';
 
+// REDUX
 import {useSelector, useDispatch} from 'react-redux';
 import {userLogout, showMsg, resetMsg} from '../redux/actions';
 

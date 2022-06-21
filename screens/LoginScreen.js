@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Text, View, TextInput, Button, StyleSheet, Alert} from 'react-native';
 import {useForm, useController} from 'react-hook-form';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// REDUX
 import {useDispatch} from 'react-redux';
 import {userLogin} from '../redux/actions';
 
@@ -20,11 +22,35 @@ const Input = ({name, control}) => {
 };
 
 export const LoginScreen = ({navigation}) => {
+  useEffect(() => {
+    // handle case: when user already logged in
+    AsyncStorage.getItem('persist:root')
+      .then(dt => {
+        const {userInfo} = JSON.parse(dt);
+        const {isAuthenticated, userEmail} = JSON.parse(userInfo);
+
+        if (isAuthenticated) {
+          Alert.alert('Status', `Welcome back, ${userEmail}`, [
+            {
+              text: "Let's Go",
+              onPress: () => {
+                navigation.navigate('Home');
+                reset();
+              },
+            },
+          ]);
+        }
+      })
+      .catch(error => console.log(error));
+  }, []);
+
+  // dispatch to use Redux action
   const dispatch = useDispatch();
 
   // react hook form init
   const {control, handleSubmit, reset} = useForm();
 
+  // handle login action
   const loginHandler = data => {
     try {
       dispatch(
@@ -35,6 +61,7 @@ export const LoginScreen = ({navigation}) => {
         }),
       );
 
+      // notify and direct to Home if success
       Alert.alert('Status', `Welcome back, ${data.email}`, [
         {
           text: "Let's Go",
