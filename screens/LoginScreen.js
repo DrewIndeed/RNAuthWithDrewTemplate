@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useController, useForm} from 'react-hook-form';
 import {Alert, Button, StyleSheet, Text, TextInput, View} from 'react-native';
 
 import {useDispatch} from 'react-redux';
 import {login} from '../slices/authSlice';
+
+import logCurrentStorage from '../utils/logCurrentStorage';
 
 // resuable input field
 const Input = ({name, control}) => {
@@ -20,6 +22,11 @@ const Input = ({name, control}) => {
 };
 
 export const LoginScreen = ({navigation}) => {
+  // print current storage
+  useEffect(() => {
+    // logCurrentStorage('LOGIN SCREEN');
+  }, []);
+
   // redux
   const dispatch = useDispatch();
 
