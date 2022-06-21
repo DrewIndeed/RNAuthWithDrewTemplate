@@ -7,6 +7,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import {userLogin} from '../redux/actions';
 
+// to use Redux actions and action payload
+import {useDispatch} from 'react-redux';
+import {login} from '../redux/userSlice';
+
+// methods to handle data
+import logCurrentStorage from '../utils/logCurrentStorage';
+import {saveData, getData} from '../utils/processData';
+
 // resuable input field
 const Input = ({name, control}) => {
   const {field} = useController({control, defaultValue: '', name});
@@ -49,7 +57,7 @@ export const LoginScreen = ({navigation}) => {
 
   // react hook form init
   const {control, handleSubmit, reset} = useForm();
-
+  
   // handle login action
   const loginHandler = data => {
     try {
@@ -79,12 +87,14 @@ export const LoginScreen = ({navigation}) => {
   // handle submit
   const onSubmit = data => {
     if (data.email.length === 0) {
+      // if email is blank
       Alert.alert('Status', 'Email is required!', [
         {
           text: 'OK',
         },
       ]);
     } else if (data.password.length === 0) {
+      // if passowrd is blank
       Alert.alert('Status', 'Password is required!', [
         {
           text: 'OK',

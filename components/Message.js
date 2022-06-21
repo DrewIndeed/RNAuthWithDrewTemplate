@@ -5,6 +5,10 @@ import {Button, Text, View, Alert} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {userLogout, showMsg, resetMsg} from '../redux/actions';
 
+// methods to handle data
+import logCurrentStorage from '../utils/logCurrentStorage';
+import {removeData} from '../utils/processData';
+
 export const Message = ({navigation}) => {
   const {userInfo, userMsg} = useSelector(state => state.drewAuthReducer);
   const dispatch = useDispatch();
