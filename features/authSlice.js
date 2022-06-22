@@ -14,14 +14,9 @@ export const asyncLoginSuccess = createAsyncThunk(
 // async login simulation: error case
 export const asyncLoginError = createAsyncThunk(
   'auth/asyncLoginError',
-  inputInfo =>
-    new Promise((_, reject) =>
-      setTimeout(() => {
-        reject({
-          message: 'Async logged in failed',
-        });
-      }, 3000),
-    ),
+  inputInfo => {
+    throw new Error('Async logged in currently failed');
+  },
 );
 
 const authSlice = createSlice({
@@ -71,10 +66,10 @@ const authSlice = createSlice({
       state.asyncResponse = null;
       state.asyncError = null;
     },
-    [asyncLoginError.rejected]: (state, action) => {
+    [asyncLoginError.fulfilled]: (state, action) => {
       state.isAuthenticated = false;
       state.asyncResponse = null;
-      state.asyncError = action.error;
+      state.asyncError = action.payload;
     },
   },
 });
