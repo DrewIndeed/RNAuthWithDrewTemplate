@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {useController, useForm} from 'react-hook-form';
 import {
   ActivityIndicator,
-  Alert,
   Button,
   StyleSheet,
   Text,
@@ -13,12 +12,15 @@ import {
 // redux
 import {useDispatch, useSelector} from 'react-redux';
 import {mainSelector} from '../redux/selectors';
+
 // methods from auth slice
-import {asyncLoginSuccess, asyncLoginError} from '../slices/authSlice';
+import {asyncLoginSuccess} from '../slices/authSlice';
 
 // async storage
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import logCurrentStorage from '../utils/logCurrentStorage';
+
+// custom alert
+import {speak} from '../utils/speak';
 
 // resuable input field
 const Input = ({name, control}) => {
@@ -51,15 +53,11 @@ export const LoginScreen = ({navigation}) => {
 
     // if user logged in before, go to Home
     if (grabber.auth.isAuthenticated) {
-      Alert.alert(
+      speak(
         'Status',
-        `Welcome back, ${grabber.auth.asyncResponse.email}`, // if sync: grabber.auth.info.email
-        [
-          {
-            text: "Let's Go",
-            onPress: () => navigation.navigate('Home'),
-          },
-        ],
+        `Welcome back, ${grabber.auth.asyncResponse.email}`,
+        "Let's Go",
+        () => navigation.navigate('Home'),
       );
     }
   }, []);
@@ -71,18 +69,10 @@ export const LoginScreen = ({navigation}) => {
   const onSubmit = data => {
     if (data.email.length === 0) {
       // if email is blank
-      Alert.alert('Status', 'Email is required!', [
-        {
-          text: 'OK',
-        },
-      ]);
+      speak('Status', `Email is required`, 'OK');
     } else if (data.password.length === 0) {
       // if passowrd is blank
-      Alert.alert('Status', 'Password is required!', [
-        {
-          text: 'OK',
-        },
-      ]);
+      speak('Status', `Password is required`, 'OK');
     } else {
       // start animating loading indicator
       setIsLoggingIn(true);
@@ -104,26 +94,19 @@ export const LoginScreen = ({navigation}) => {
           reset();
 
           // notify
-          Alert.alert('Status', `Welcome back, ${asyncUnwrapResult.email}`, [
-            {
-              text: "Let's Go",
-              onPress: () => {
-                // go to Home
-                navigation.navigate('Home');
-              },
-            },
-          ]);
+          speak(
+            'Status',
+            `Welcome back, ${asyncUnwrapResult.email}`,
+            "Let's Go",
+            () => navigation.navigate('Home'),
+          );
         })
         .catch(asyncUnwrapError => {
           // stop loading indicators
           setIsLoggingIn(false);
 
           // notify
-          Alert.alert('Status', `${asyncUnwrapError.message}`, [
-            {
-              text: 'Try Again',
-            },
-          ]);
+          speak('Status', `${asyncUnwrapError.message}`, 'Try Again');
         });
     }
   };
@@ -150,11 +133,7 @@ export const LoginScreen = ({navigation}) => {
       <Input name="password" control={control} />
 
       {/* submit button */}
-      <Button
-        color="#fff"
-        title="Log Me In"
-        onPress={handleSubmit(onSubmit)}
-      />
+      <Button color="#fff" title="Log Me In" onPress={handleSubmit(onSubmit)} />
     </View>
   );
 };
