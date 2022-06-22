@@ -1,5 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 
+// async login simulation: fulfilled case
 export const asyncLoginSuccess = createAsyncThunk(
   'auth/asyncLoginSuccess',
   inputInfo =>
@@ -10,6 +11,7 @@ export const asyncLoginSuccess = createAsyncThunk(
     ),
 );
 
+// async login simulation: error case
 export const asyncLoginError = createAsyncThunk(
   'auth/asyncLoginError',
   inputInfo =>

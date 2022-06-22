@@ -97,7 +97,10 @@ export const LoginScreen = ({navigation}) => {
       )
         .unwrap()
         .then(asyncUnwrapResult => {
+          // stop loading indicator
           setIsLoggingIn(false);
+
+          // reset form input values
           reset();
 
           // notify
@@ -112,6 +115,7 @@ export const LoginScreen = ({navigation}) => {
           ]);
         })
         .catch(asyncUnwrapError => {
+          // stop loading indicators
           setIsLoggingIn(false);
 
           // notify
@@ -126,19 +130,9 @@ export const LoginScreen = ({navigation}) => {
 
   // render form
   return (
-    <View
-      style={{
-        backgroundColor: '#4287f5',
-        flex: 1,
-        justifyContent: 'center',
-      }}>
+    <View style={styles.container}>
       {isLoggingIn ? (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: 20,
-          }}>
+        <View style={styles.indicatorContainer}>
           <ActivityIndicator
             size="large"
             color="#fff"
@@ -146,16 +140,7 @@ export const LoginScreen = ({navigation}) => {
           />
         </View>
       ) : (
-        <Text
-          style={{
-            width: '100%',
-            fontSize: 40,
-            textAlign: 'center',
-            marginBottom: 60,
-            color: '#fff',
-          }}>
-          Login For More
-        </Text>
+        <Text style={styles.mainTitle}>Login For More</Text>
       )}
 
       {/* input fields */}
@@ -166,7 +151,7 @@ export const LoginScreen = ({navigation}) => {
 
       {/* submit button */}
       <Button
-        color="white"
+        color="#fff"
         title="Log Me In"
         onPress={handleSubmit(onSubmit)}
       />
@@ -175,6 +160,23 @@ export const LoginScreen = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#4287f5',
+    flex: 1,
+    justifyContent: 'center',
+  },
+  indicatorContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
+  mainTitle: {
+    width: '100%',
+    fontSize: 40,
+    textAlign: 'center',
+    marginBottom: 60,
+    color: '#fff',
+  },
   input: {
     height: 70,
     backgroundColor: '#F5FCFF',
