@@ -56,11 +56,11 @@ export const LoginScreen = ({navigation}) => {
     printallAsyncStorage('LOGIN SCREEN');
 
     // if user logged in before, go to Home
-    if (authenticatedGrabber) {
-      speak('Status', `Welcome back, ${emailGrabber}`, "Let's Go", () =>
-        navigation.navigate('HomeNavigator'),
-      );
-    }
+    // if (authenticatedGrabber) {
+    //   speak('Status', `Welcome back, ${emailGrabber}`, "Let's Go", () =>
+    //     navigation.navigate('HomeNavigator'),
+    //   );
+    // }
   }, []);
 
   // react hook form init
@@ -94,12 +94,10 @@ export const LoginScreen = ({navigation}) => {
           // reset form input values
           reset();
 
-          // notify
           speak(
             'Status',
             `Welcome back, ${asyncUnwrapResult.email}`,
-            "Let's Go",
-            () => navigation.navigate('HomeNavigator'),
+            'Hi There!',
           );
         })
         .catch(asyncUnwrapError => {

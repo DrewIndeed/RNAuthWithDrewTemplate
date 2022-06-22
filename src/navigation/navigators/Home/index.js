@@ -7,13 +7,12 @@ import {Home1Screen} from '../../../screens/Home1';
 
 const Stack = createStackNavigator();
 export const HomeNavigator = () => (
-  <Stack.Navigator initialRouteName="Home">
+  <Stack.Navigator>
     <Stack.Screen
       name="Home"
       component={HomeScreen}
       options={{title: 'Home Screen', headerLeft: false}}
     />
-
     <Stack.Screen
       name="Home1"
       component={Home1Screen}

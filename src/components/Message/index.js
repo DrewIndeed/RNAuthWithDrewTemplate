@@ -32,10 +32,9 @@ export const Message = ({navigation}) => {
           dispatch(logout());
 
           // go back to Login
-          navigation.reset({
-            index: 0,
-            routes: [{name: 'BoardingNavigator'}],
-          });
+          setTimeout(() => {
+            navigation.navigate('Login');
+          }, 500);
         }}
       />
     </View>

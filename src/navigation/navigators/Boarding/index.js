@@ -7,7 +7,7 @@ import {SignupScreen} from '../../../screens/Signup';
 
 const Stack = createStackNavigator();
 export const BoardingNavigator = () => (
-  <Stack.Navigator initialRouteName="Login">
+  <Stack.Navigator>
     <Stack.Screen
       name="Login"
       component={LoginScreen}

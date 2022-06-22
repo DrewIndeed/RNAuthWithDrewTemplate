@@ -11,11 +11,16 @@ import {AppNavigationContainer} from './navigation/containers/App';
 // loading indicator component
 import {LoadingMarkup} from './components/LoadingMarkup';
 
+// Auth Provider
+import {AuthProvider} from './components/AuthProvider';
+
 export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={<LoadingMarkup />} persistor={persistor}>
-        <AppNavigationContainer />
+        <AuthProvider>
+          <AppNavigationContainer />
+        </AuthProvider>
       </PersistGate>
     </Provider>
   );
