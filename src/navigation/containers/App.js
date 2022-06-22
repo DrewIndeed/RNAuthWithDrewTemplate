@@ -1,24 +1,23 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 
 // navigators
 import {BoardingNavigator} from '../navigators/Boarding';
 import {HomeNavigator} from '../navigators/Home';
 
-// Auth Context
-import {AuthContext} from '../../components/AuthProvider';
+import {authenticatedSelector} from '../../features/auth/selectors';
+import {useSelector} from 'react-redux';
 
 export const AppNavigationContainer = () => {
-  const {isAuthenticated} = useContext(AuthContext);
+  const authenticatedGrabber = useSelector(authenticatedSelector);
 
-  // print current storage
   useEffect(() => {
-    console.log('at AppNavigationContainer', isAuthenticated);
+    console.log('at AppNavigationContainer', authenticatedGrabber);
   }, []);
 
   return (
     <NavigationContainer>
-      {isAuthenticated ? <HomeNavigator /> : <BoardingNavigator />}
+      {authenticatedGrabber ? <HomeNavigator /> : <BoardingNavigator />}
     </NavigationContainer>
   );
 };
