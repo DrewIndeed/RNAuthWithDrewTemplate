@@ -19,7 +19,7 @@ export const Message = ({navigation}) => {
       <Button
         title={'Say Greeting'}
         onPress={() =>
-          dispatch(show(`Hello ${grabber.auth.info.email} - from Redux ⚡️`))
+          dispatch(show(`Hello ${grabber.auth.asyncResponse.email} - from Redux ⚡️`))
         }
       />
       <Button title={'Hide Greeting'} onPress={() => dispatch(hide())} />

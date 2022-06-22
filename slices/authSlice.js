@@ -1,4 +1,26 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+
+export const asyncLoginSuccess = createAsyncThunk(
+  'auth/asyncLoginSuccess',
+  inputInfo =>
+    new Promise(resolve =>
+      setTimeout(() => {
+        resolve(inputInfo);
+      }, 3000),
+    ),
+);
+
+export const asyncLoginError = createAsyncThunk(
+  'auth/asyncLoginError',
+  inputInfo =>
+    new Promise((_, reject) =>
+      setTimeout(() => {
+        reject({
+          message: 'Async logged in failed',
+        });
+      }, 3000),
+    ),
+);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -8,6 +30,8 @@ const authSlice = createSlice({
       email: '',
       pwd: '',
     },
+    asyncResponse: null,
+    asyncError: null,
   },
   reducers: {
     login: (state, action) => {
@@ -16,6 +40,8 @@ const authSlice = createSlice({
         email: action.payload.email,
         pwd: action.payload.pwd,
       };
+      state.asyncResponse = null;
+      state.asyncError = null;
     },
     logout: state => {
       state.isAuthenticated = false;
@@ -23,6 +49,30 @@ const authSlice = createSlice({
         email: '',
         pwd: '',
       };
+      state.asyncResponse = null;
+      state.asyncError = null;
+    },
+  },
+  extraReducers: {
+    [asyncLoginSuccess.pending]: state => {
+      state.isAuthenticated = false;
+      state.asyncResponse = null;
+      state.asyncError = null;
+    },
+    [asyncLoginSuccess.fulfilled]: (state, action) => {
+      state.isAuthenticated = true;
+      state.asyncResponse = action.payload;
+      state.asyncError = null;
+    },
+    [asyncLoginError.pending]: state => {
+      state.isAuthenticated = false;
+      state.asyncResponse = null;
+      state.asyncError = null;
+    },
+    [asyncLoginError.rejected]: (state, action) => {
+      state.isAuthenticated = false;
+      state.asyncResponse = null;
+      state.asyncError = action.error;
     },
   },
 });

@@ -1,13 +1,24 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useController, useForm} from 'react-hook-form';
-import {Alert, Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Button,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 
 // redux
 import {useDispatch, useSelector} from 'react-redux';
 import {mainSelector} from '../redux/selectors';
-import {login} from '../slices/authSlice';
+// methods from auth slice
+import {asyncLoginSuccess, asyncLoginError} from '../slices/authSlice';
 
-// import logCurrentStorage from '../utils/logCurrentStorage';
+// async storage
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import logCurrentStorage from '../utils/logCurrentStorage';
 
 // resuable input field
 const Input = ({name, control}) => {
@@ -24,24 +35,32 @@ const Input = ({name, control}) => {
 };
 
 export const LoginScreen = ({navigation}) => {
+  // indi states
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
   // redux
   const dispatch = useDispatch();
   const grabber = useSelector(mainSelector);
 
   // print current storage
   useEffect(() => {
-    console.log('at home');
+    console.log('at login');
 
-    // logCurrentStorage('LOGIN SCREEN');
+    // AsyncStorage.clear();
+    logCurrentStorage('LOGIN SCREEN');
 
     // if user logged in before, go to Home
     if (grabber.auth.isAuthenticated) {
-      Alert.alert('Status', `Welcome back, ${grabber.auth.info.email}`, [
-        {
-          text: "Let's Go",
-          onPress: () => navigation.navigate('Home'),
-        },
-      ]);
+      Alert.alert(
+        'Status',
+        `Welcome back, ${grabber.auth.asyncResponse.email}`, // if sync: grabber.auth.info.email
+        [
+          {
+            text: "Let's Go",
+            onPress: () => navigation.navigate('Home'),
+          },
+        ],
+      );
     }
   }, []);
 
@@ -65,46 +84,79 @@ export const LoginScreen = ({navigation}) => {
         },
       ]);
     } else {
-      try {
-        // redux login
-        dispatch(
-          login({
-            email: data.email,
-            pwd: data.password,
-          }),
-        );
+      // start animating loading indicator
+      setIsLoggingIn(true);
 
-        // notify
-        Alert.alert('Status', `Welcome back, ${data.email}`, [
-          {
-            text: "Let's Go",
-            onPress: () => {
-              // reset form values
-              reset();
+      // redux login
+      dispatch(
+        // change this to asyncLoginError() to see error case
+        asyncLoginSuccess({
+          email: data.email,
+          pwd: data.password,
+        }),
+      )
+        .unwrap()
+        .then(asyncUnwrapResult => {
+          setIsLoggingIn(false);
+          reset();
 
-              // go to Home
-              navigation.navigate('Home');
+          // notify
+          Alert.alert('Status', `Welcome back, ${asyncUnwrapResult.email}`, [
+            {
+              text: "Let's Go",
+              onPress: () => {
+                // go to Home
+                navigation.navigate('Home');
+              },
             },
-          },
-        ]);
-      } catch (error) {
-        console.log(error);
-      }
+          ]);
+        })
+        .catch(asyncUnwrapError => {
+          setIsLoggingIn(false);
+
+          // notify
+          Alert.alert('Status', `${asyncUnwrapError.message}`, [
+            {
+              text: 'Try Again',
+            },
+          ]);
+        });
     }
   };
 
   // render form
   return (
-    <View>
-      <Text
-        style={{
-          fontSize: 40,
-          textAlign: 'center',
-          marginTop: 150,
-          marginBottom: 60,
-        }}>
-        Login For More 🔥
-      </Text>
+    <View
+      style={{
+        backgroundColor: '#4287f5',
+        flex: 1,
+        justifyContent: 'center',
+      }}>
+      {isLoggingIn ? (
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: 20,
+          }}>
+          <ActivityIndicator
+            size="large"
+            color="#fff"
+            animating={isLoggingIn}
+          />
+        </View>
+      ) : (
+        <Text
+          style={{
+            width: '100%',
+            fontSize: 40,
+            textAlign: 'center',
+            marginBottom: 60,
+            color: '#fff',
+          }}>
+          Login For More
+        </Text>
+      )}
 
       {/* input fields */}
       <Text style={styles.inputTitle}>Email</Text>
@@ -113,7 +165,11 @@ export const LoginScreen = ({navigation}) => {
       <Input name="password" control={control} />
 
       {/* submit button */}
-      <Button title="Log Me In" onPress={handleSubmit(onSubmit)} />
+      <Button
+        color="white"
+        title="Log Me In"
+        onPress={handleSubmit(onSubmit)}
+      />
     </View>
   );
 };
@@ -138,5 +194,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 15,
     marginLeft: 30,
+    color: 'white',
   },
 });
