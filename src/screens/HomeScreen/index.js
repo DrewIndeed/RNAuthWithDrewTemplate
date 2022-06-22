@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {Platform, StyleSheet, Text, View} from 'react-native';
 
 // components
-import {Message} from '../components/Message';
+import {Message} from '../../components/Message';
 
 // import logCurrentStorage from '../utils/logCurrentStorage';
 

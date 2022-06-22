@@ -3,13 +3,13 @@ import {Button, Text, View} from 'react-native';
 
 // redux
 import {useDispatch, useSelector} from 'react-redux';
-import {logout} from '../slices/authSlice';
-import {show, hide} from '../slices/messageSlice';
-import {mainSelector} from '../redux/selectors';
+import {logout} from '../../../features/authSlice';
+import {show, hide} from '../../../features/messageSlice';
+import {rootSelector} from '../../config/store/rootSelector';
 
 export const Message = ({navigation}) => {
   const dispatch = useDispatch();
-  const grabber = useSelector(mainSelector);
+  const grabber = useSelector(rootSelector);
 
   return (
     <View style={{flex: 1}}>
@@ -19,7 +19,9 @@ export const Message = ({navigation}) => {
       <Button
         title={'Say Greeting'}
         onPress={() =>
-          dispatch(show(`Hello ${grabber.auth.asyncResponse.email} - from Redux ⚡️`))
+          dispatch(
+            show(`Hello ${grabber.auth.asyncResponse.email} - from Redux ⚡️`),
+          )
         }
       />
       <Button title={'Hide Greeting'} onPress={() => dispatch(hide())} />

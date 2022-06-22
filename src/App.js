@@ -1,6 +1,6 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import store, {persistor} from './redux/store';
+import store, {persistor} from './config/store/store';
 
 // for redux PERSIST
 import {ActivityIndicator, View} from 'react-native';

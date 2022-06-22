@@ -11,16 +11,16 @@ import {
 
 // redux
 import {useDispatch, useSelector} from 'react-redux';
-import {mainSelector} from '../redux/selectors';
+import {rootSelector} from '../../config/store/rootSelector';
 
 // methods from auth slice
-import {asyncLoginSuccess} from '../slices/authSlice';
+import {asyncLoginSuccess} from '../../../features/authSlice';
 
 // async storage
-import logCurrentStorage from '../utils/logCurrentStorage';
+import logCurrentStorage from '../../utils/logCurrentStorage';
 
 // custom alert
-import {speak} from '../utils/speak';
+import {speak} from '../../utils/speak';
 
 // resuable input field
 const Input = ({name, control}) => {
@@ -42,7 +42,7 @@ export const LoginScreen = ({navigation}) => {
 
   // redux
   const dispatch = useDispatch();
-  const grabber = useSelector(mainSelector);
+  const grabber = useSelector(rootSelector);
 
   // print current storage
   useEffect(() => {

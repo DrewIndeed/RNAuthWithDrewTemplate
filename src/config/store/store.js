@@ -2,7 +2,6 @@
 import {configureStore} from '@reduxjs/toolkit';
 
 // for redux PERSIST
-import {combineReducers} from 'redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {persistStore, persistReducer} from 'redux-persist';
 
@@ -10,15 +9,8 @@ import {persistStore, persistReducer} from 'redux-persist';
 import thunk from 'redux-thunk';
 import {createLogger} from 'redux-logger';
 
-// indi reducers
-import authReducer from '../slices/authSlice';
-import messageReducer from '../slices/messageSlice';
-
-// combined reducer -> target for persistReducer() method because it can only eat 1 reducer
-const reducers = combineReducers({
-  auth: authReducer,
-  message: messageReducer,
-});
+// root reducer
+import {rootReducer} from './rootReducer';
 
 // config param for persistReducer()
 const persistConfig = {
@@ -29,7 +21,7 @@ const persistConfig = {
 };
 
 // feed necessary params and create persisted reducer
-const persistedReducer = persistReducer(persistConfig, reducers);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // create Redux store
 const store = configureStore({
