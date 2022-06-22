@@ -11,10 +11,13 @@ import {
 
 // redux
 import {useDispatch, useSelector} from 'react-redux';
-import {rootSelector} from '../../config/store/rootSelector';
+import {
+  emailSelector,
+  authenticatedSelector,
+} from '../../features/auth/selectors';
 
 // methods from auth slice
-import {asyncLoginSuccess, asyncLoginError} from '../../features/authSlice';
+import {asyncLoginSuccess, asyncLoginError} from '../../features/auth/slice';
 
 // async storage
 import printallAsyncStorage from '../../utils/printallAsyncStorage';
@@ -42,7 +45,8 @@ export const LoginScreen = ({navigation}) => {
 
   // redux
   const dispatch = useDispatch();
-  const grabber = useSelector(rootSelector);
+  const emailGrabber = useSelector(emailSelector);
+  const authenticatedGrabber = useSelector(authenticatedSelector);
 
   // print current storage
   useEffect(() => {
@@ -52,12 +56,9 @@ export const LoginScreen = ({navigation}) => {
     printallAsyncStorage('LOGIN SCREEN');
 
     // if user logged in before, go to Home
-    if (grabber.auth.isAuthenticated) {
-      speak(
-        'Status',
-        `Welcome back, ${grabber.auth.asyncResponse.email}`,
-        "Let's Go",
-        () => navigation.navigate('HomeNavigator'),
+    if (authenticatedGrabber) {
+      speak('Status', `Welcome back, ${emailGrabber}`, "Let's Go", () =>
+        navigation.navigate('HomeNavigator'),
       );
     }
   }, []);

@@ -7,7 +7,7 @@ import {persistStore, persistReducer} from 'redux-persist';
 
 // for feeding middleware
 import thunk from 'redux-thunk';
-import {createLogger} from 'redux-logger';
+// import {createLogger} from 'redux-logger';
 
 // root reducer
 import {rootReducer} from './rootReducer';
@@ -26,7 +26,10 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 // create Redux store
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: [thunk, createLogger()],
+  middleware: [
+    thunk,
+    // createLogger()
+  ],
 });
 
 // export store and persistor to feed Provider and PersistorGate at App.js
