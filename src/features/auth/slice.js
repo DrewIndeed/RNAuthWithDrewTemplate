@@ -21,6 +21,17 @@ export const asyncLoginError = createAsyncThunk(
   },
 );
 
+// async logout simulation: fulfilled case
+export const asyncLogoutSuccess = createAsyncThunk(
+  'auth/asyncLogoutSuccess',
+  () =>
+    new Promise(resolve =>
+      setTimeout(() => {
+        resolve('Logged out successfully');
+      }, 3000),
+    ),
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -72,6 +83,14 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.asyncResponse = null;
       state.asyncError = action.payload;
+    },
+    [asyncLogoutSuccess.pending]: state => {
+      state.isAuthenticated = true;
+    },
+    [asyncLogoutSuccess.fulfilled]: state => {
+      state.isAuthenticated = false;
+      state.asyncResponse = null;
+      state.asyncError = null;
     },
   },
 });
