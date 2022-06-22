@@ -34,7 +34,7 @@ export const Message = ({navigation}) => {
           // go back to Login
           navigation.reset({
             index: 0,
-            routes: [{name: 'Login'}],
+            routes: [{name: 'BoardingNavigator'}],
           });
         }}
       />

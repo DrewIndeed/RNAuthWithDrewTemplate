@@ -57,7 +57,7 @@ export const LoginScreen = ({navigation}) => {
         'Status',
         `Welcome back, ${grabber.auth.asyncResponse.email}`,
         "Let's Go",
-        () => navigation.navigate('Home'),
+        () => navigation.navigate('HomeNavigator'),
       );
     }
   }, []);
@@ -98,7 +98,7 @@ export const LoginScreen = ({navigation}) => {
             'Status',
             `Welcome back, ${asyncUnwrapResult.email}`,
             "Let's Go",
-            () => navigation.navigate('Home'),
+            () => navigation.navigate('HomeNavigator'),
           );
         })
         .catch(asyncUnwrapError => {
