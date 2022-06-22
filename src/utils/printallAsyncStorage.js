@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // METHOD TO PRINT ALL DATA IN ASYNC STORAGE
-export default function logCurrentStorage(screenName) {
+export default function printallAsyncStorage(screenName) {
   AsyncStorage.getAllKeys().then(keyArray => {
     AsyncStorage.multiGet(keyArray).then(keyValArray => {
       let myStorage = {};

@@ -4,7 +4,7 @@ import {Platform, StyleSheet, Text, View} from 'react-native';
 // components
 import {Message} from '../../components/Message';
 
-// import logCurrentStorage from '../utils/logCurrentStorage';
+// import printallAsyncStorage from '../utils/printallAsyncStorage';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Press Cmd+D or shake for dev menu\n',
@@ -16,7 +16,7 @@ const instructions = Platform.select({
 export const HomeScreen = ({navigation}) => {
   useEffect(() => {
     console.log('at home');
-    // logCurrentStorage('LOGIN SCREEN');
+    // printallAsyncStorage('LOGIN SCREEN');
   }, []);
 
   return (

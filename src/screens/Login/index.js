@@ -17,7 +17,7 @@ import {rootSelector} from '../../config/store/rootSelector';
 import {asyncLoginSuccess} from '../../../features/authSlice';
 
 // async storage
-import logCurrentStorage from '../../utils/logCurrentStorage';
+import printallAsyncStorage from '../../utils/printallAsyncStorage';
 
 // custom alert
 import {speak} from '../../utils/speak';
@@ -49,7 +49,7 @@ export const LoginScreen = ({navigation}) => {
     console.log('at login');
 
     // AsyncStorage.clear();
-    logCurrentStorage('LOGIN SCREEN');
+    printallAsyncStorage('LOGIN SCREEN');
 
     // if user logged in before, go to Home
     if (grabber.auth.isAuthenticated) {

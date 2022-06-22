@@ -1,6 +1,6 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import store, {persistor} from './config/store/store';
+import store, {persistor} from './config/store';
 
 // for redux PERSIST
 import {ActivityIndicator, View} from 'react-native';
@@ -11,8 +11,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 // screens
-import {HomeScreen} from './screens/HomeScreen';
-import {LoginScreen} from './screens/LoginScreen';
+import {HomeScreen} from './screens/Home';
+import {LoginScreen} from './screens/Login';
 
 // loading indicator component
 const LoadingMarkup = () => (
