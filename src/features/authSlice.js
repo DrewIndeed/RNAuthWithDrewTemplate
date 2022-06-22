@@ -1,4 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {persistReducer} from 'redux-persist';
 
 // async login simulation: fulfilled case
 export const asyncLoginSuccess = createAsyncThunk(
@@ -74,5 +76,10 @@ const authSlice = createSlice({
   },
 });
 
+const persistConfig = {
+  key: 'authSlice',
+  storage: AsyncStorage,
+};
+
 export const {login, logout} = authSlice.actions;
-export default authSlice.reducer;
+export default persistReducer(persistConfig, authSlice.reducer);

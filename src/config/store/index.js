@@ -16,8 +16,8 @@ import {rootReducer} from './rootReducer';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth'], //  PERSISTED state attributes, names in this array are names of the slices
-  blacklist: ['message'], // NOT PERSISTED state attributes, names in this array are names of the slices
+  whitelist: [], //  PERSISTED state attributes, names in this array are names of the slices
+  blacklist: [], // NOT PERSISTED state attributes, names in this array are names of the slices
 };
 
 // feed necessary params and create persisted reducer

@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {rootSelector} from '../../config/store/rootSelector';
 
 // methods from auth slice
-import {asyncLoginSuccess, asyncLoginError} from '../../../features/authSlice';
+import {asyncLoginSuccess, asyncLoginError} from '../../features/authSlice';
 
 // async storage
 import printallAsyncStorage from '../../utils/printallAsyncStorage';

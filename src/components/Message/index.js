@@ -3,8 +3,8 @@ import {Button, Text, View} from 'react-native';
 
 // redux
 import {useDispatch, useSelector} from 'react-redux';
-import {logout} from '../../../features/authSlice';
-import {show, hide} from '../../../features/messageSlice';
+import {logout} from '../../features/authSlice';
+import {show, hide} from '../../features/messageSlice';
 import {rootSelector} from '../../config/store/rootSelector';
 
 export const Message = ({navigation}) => {
